@@ -18,7 +18,10 @@ const pedidoRoutes = require('./routes/pedido');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+// DEBUG: Log para ver qual connection string está sendo usada
+console.log('🔍 MONGODB_URI from env:', process.env.MONGODB_URI ? 'PRESENTE' : 'AUSENTE');
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/sorveteria';
+console.log('🔍 MONGODB_URI sendo usado:', MONGODB_URI.substring(0, 50) + '...');
 const uploadDir = path.join(__dirname, 'public', 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
