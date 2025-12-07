@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorveteria Delícia - Os Melhores Sorvetes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1>🍦 Sorveteria Delícia</h1>
+                </div>
+                <div class="nav-menu">
+                    <a href="/">Início</a>
+                    <a href="#produtos">Produtos</a>
+                    <a href="#sobre">Sobre</a>
+                    <div id="userMenu">
+                        <a href="/login" class="btn-login">Entrar</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Sabores que Derretem o Coração</h2>
+            <p>Sorvetes artesanais feitos com muito amor e ingredientes selecionados</p>
+            <a href="#produtos" class="btn-primary">Ver Cardápio</a>
+        </div>
+    </section>
+
+    <section id="produtos" class="produtos-section">
+        <div class="container">
+            <h2 class="section-title">Nossos Sorvetes</h2>
+            <div id="produtosGrid" class="produtos-grid">
+                <!-- Produtos serão carregados aqui via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre" class="sobre-section">
+        <div class="container">
+            <h2 class="section-title">Sobre Nós</h2>
+            <div class="sobre-content">
+                <div class="sobre-text">
+                    <h3>Uma História de Sabor</h3>
+                    <p>Há mais de 20 anos, a Sorveteria Delícia traz para você os melhores sorvetes artesanais da região. Nossa paixão é criar momentos especiais através de sabores únicos e inesquecíveis.</p>
+                    <p>Utilizamos apenas ingredientes naturais e de alta qualidade, sem conservantes artificiais. Cada sorvete é preparado com dedicação e carinho para garantir a sua satisfação.</p>
+                </div>
+                <div class="sobre-features">
+                    <div class="feature-card">
+                        <span class="feature-icon">🥇</span>
+                        <h4>Qualidade Premium</h4>
+                        <p>Ingredientes selecionados</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🌿</span>
+                        <h4>100% Natural</h4>
+                        <p>Sem conservantes</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">❤️</span>
+                        <h4>Feito com Amor</h4>
+                        <p>Receitas artesanais</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="carrinho" class="carrinho-sidebar">
+        <div class="carrinho-header">
+            <h3>🛒 Carrinho</h3>
+            <button id="fecharCarrinho" class="btn-fechar">&times;</button>
+        </div>
+        <div id="carrinhoItens" class="carrinho-itens">
+            <!-- Itens do carrinho serão adicionados aqui -->
+        </div>
+        <div class="carrinho-footer">
+            <div class="carrinho-total">
+                <span>Total:</span>
+                <span id="carrinhoTotal">R$ 0,00</span>
+            </div>
+            <button id="finalizarPedido" class="btn-finalizar">Finalizar Pedido</button>
+        </div>
+    </div>
+
+    <button id="btnCarrinho" class="btn-carrinho-flutuante">
+        🛒 <span id="carrinhoCount">0</span>
+    </button>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Sorveteria Delícia. Todos os direitos reservados.</p>
+            <p>Feito com ❤️ e muito sorvete!</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

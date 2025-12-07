@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de API - Sorveteria</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .test-title {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .result {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .image-card {
+            width: 200px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+        .image-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .image-card-info {
+            padding: 10px;
+        }
+        .image-card-info h4 {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .image-card-info p {
+            font-size: 0.8em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Teste de API - Sorveteria Delícia</h1>
+        
+        <div class="test-section">
+            <div class="test-title">1. Teste de Conexão com Servidor</div>
+            <div id="serverStatus" class="status pending">⏳ Aguardando teste...</div>
+            <div id="serverResult" class="result" style="display:none;"></div>
+            <button onclick="testarServidor()">Testar Servidor</button>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">2. Teste de API de Produtos</div>
+            <div id="apiStatus" class="status pending">⏳ Aguardando teste...</div>
+            <div id="apiResult" class="result" style="display:none;"></div>
+            <button onclick="testarAPI()">Testar API</button>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">3. Teste de Carregamento de Imagens</div>
+            <div id="imageStatus" class="status pending">⏳ Aguardando teste...</div>
+            <div id="imagePreview" class="image-preview"></div>
+            <button onclick="testarImagens()">Testar Imagens</button>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">4. Teste Completo do Sistema</div>
+            <div id="systemStatus" class="status pending">⏳ Aguardando teste...</div>
+            <div id="systemResult" class="result" style="display:none;"></div>
+            <button onclick="testarSistemaCompleto()">Teste Completo</button>
+        </div>
+    </div>
+
+    <script>
+        async function testarServidor() {
+            const statusEl = document.getElementById('serverStatus');
+            const resultEl = document.getElementById('serverResult');
+            
+            statusEl.className = 'status pending';
+            statusEl.textContent = '⏳ Testando conexão...';
+            resultEl.style.display = 'none';
+            
+            try {
+                const response = await fetch('/');
+                if (response.ok) {
+                    statusEl.className = 'status success';
+                    statusEl.textContent = '✅ Servidor está rodando!';
+                    resultEl.textContent = `Status: ${response.status}\nServidor respondeu corretamente.`;
+                    resultEl.style.display = 'block';
+                } else {
+                    throw new Error('Resposta não OK');
+                }
+            } catch (error) {
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Erro ao conectar';
+                resultEl.textContent = `Erro: ${error.message}\n\nCertifique-se de que o servidor está rodando com 'npm start'`;
+                resultEl.style.display = 'block';
+            }
+        }
+
+        async function testarAPI() {
+            const statusEl = document.getElementById('apiStatus');
+            const resultEl = document.getElementById('apiResult');
+            
+            statusEl.className = 'status pending';
+            statusEl.textContent = '⏳ Buscando produtos...';
+            resultEl.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/produtos');
+                const produtos = await response.json();
+                
+                if (produtos.length > 0) {
+                    statusEl.className = 'status success';
+                    statusEl.textContent = `✅ ${produtos.length} produtos encontrados!`;
+                    resultEl.textContent = JSON.stringify(produtos, null, 2);
+                    resultEl.style.display = 'block';
+                } else {
+                    statusEl.className = 'status error';
+                    statusEl.textContent = '⚠️ Nenhum produto encontrado';
+                    resultEl.textContent = 'O banco de dados está vazio.\n\nSolução:\n1. Pare o servidor (Ctrl+C)\n2. Execute: mongosh\n3. Execute: use sorveteria\n4. Execute: db.dropDatabase()\n5. Execute: exit\n6. Inicie o servidor novamente: npm start';
+                    resultEl.style.display = 'block';
+                }
+            } catch (error) {
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Erro na API';
+                resultEl.textContent = `Erro: ${error.message}\n\nVerifique se o servidor está rodando e se o MongoDB está conectado.`;
+                resultEl.style.display = 'block';
+            }
+        }
+
+        async function testarImagens() {
+            const statusEl = document.getElementById('imageStatus');
+            const previewEl = document.getElementById('imagePreview');
+            
+            statusEl.className = 'status pending';
+            statusEl.textContent = '⏳ Carregando imagens...';
+            previewEl.innerHTML = '';
+            
+            try {
+                const response = await fetch('/api/produtos');
+                const produtos = await response.json();
+                
+                if (produtos.length === 0) {
+                    statusEl.className = 'status error';
+                    statusEl.textContent = '❌ Nenhum produto para testar';
+                    return;
+                }
+                
+                let imagensCarregadas = 0;
+                let errosImagem = 0;
+                
+                produtos.forEach(produto => {
+                    const card = document.createElement('div');
+                    card.className = 'image-card';
+                    
+                    const img = document.createElement('img');
+                    img.src = produto.imagem;
+                    img.alt = produto.nome;
+                    
+                    img.onload = () => {
+                        imagensCarregadas++;
+                        atualizarStatusImagens();
+                    };
+                    
+                    img.onerror = () => {
+                        errosImagem++;
+                        img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="150"%3E%3Crect fill="%23ddd" width="200" height="150"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" fill="%23666" font-size="14"%3EErro ao carregar%3C/text%3E%3C/svg%3E';
+                        atualizarStatusImagens();
+                    };
+                    
+                    const info = document.createElement('div');
+                    info.className = 'image-card-info';
+                    info.innerHTML = `
+                        <h4>${produto.nome}</h4>
+                        <p>R$ ${produto.preco.toFixed(2)}</p>
+                    `;
+                    
+                    card.appendChild(img);
+                    card.appendChild(info);
+                    previewEl.appendChild(card);
+                });
+                
+                function atualizarStatusImagens() {
+                    const total = produtos.length;
+                    const processadas = imagensCarregadas + errosImagem;
+                    
+                    if (processadas === total) {
+                        if (errosImagem === 0) {
+                            statusEl.className = 'status success';
+                            statusEl.textContent = `✅ Todas as ${imagensCarregadas} imagens carregaram!`;
+                        } else if (imagensCarregadas > 0) {
+                            statusEl.className = 'status pending';
+                            statusEl.textContent = `⚠️ ${imagensCarregadas} OK, ${errosImagem} com erro`;
+                        } else {
+                            statusEl.className = 'status error';
+                            statusEl.textContent = `❌ Todas as imagens falharam`;
+                        }
+                    } else {
+                        statusEl.textContent = `⏳ Carregando... ${processadas}/${total}`;
+                    }
+                }
+                
+            } catch (error) {
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Erro ao testar imagens';
+            }
+        }
+
+        async function testarSistemaCompleto() {
+            const statusEl = document.getElementById('systemStatus');
+            const resultEl = document.getElementById('systemResult');
+            
+            statusEl.className = 'status pending';
+            statusEl.textContent = '⏳ Executando testes...';
+            resultEl.style.display = 'block';
+            resultEl.textContent = '';
+            
+            const testes = [];
+            
+            // Teste 1: Servidor
+            try {
+                await fetch('/');
+                testes.push('✅ Servidor: OK');
+            } catch (e) {
+                testes.push('❌ Servidor: FALHOU - ' + e.message);
+            }
+            
+            // Teste 2: API Produtos
+            try {
+                const res = await fetch('/api/produtos');
+                const produtos = await res.json();
+                if (produtos.length > 0) {
+                    testes.push(`✅ API Produtos: OK (${produtos.length} produtos)`);
+                } else {
+                    testes.push('⚠️ API Produtos: Banco vazio');
+                }
+            } catch (e) {
+                testes.push('❌ API Produtos: FALHOU - ' + e.message);
+            }
+            
+            // Teste 3: API Sabores
+            try {
+                const res = await fetch('/api/sabores');
+                const sabores = await res.json();
+                testes.push(`✅ API Sabores: OK (${sabores.length} sabores)`);
+            } catch (e) {
+                testes.push('❌ API Sabores: FALHOU');
+            }
+            
+            // Teste 4: API Tipos
+            try {
+                const res = await fetch('/api/tipos');
+                const tipos = await res.json();
+                testes.push(`✅ API Tipos: OK (${tipos.length} tipos)`);
+            } catch (e) {
+                testes.push('❌ API Tipos: FALHOU');
+            }
+            
+            // Teste 5: API Tamanhos
+            try {
+                const res = await fetch('/api/tamanhos');
+                const tamanhos = await res.json();
+                testes.push(`✅ API Tamanhos: OK (${tamanhos.length} tamanhos)`);
+            } catch (e) {
+                testes.push('❌ API Tamanhos: FALHOU');
+            }
+            
+            // Teste 6: API Categorias
+            try {
+                const res = await fetch('/api/categorias');
+                const categorias = await res.json();
+                testes.push(`✅ API Categorias: OK (${categorias.length} categorias)`);
+            } catch (e) {
+                testes.push('❌ API Categorias: FALHOU');
+            }
+            
+            resultEl.textContent = testes.join('\n');
+            
+            const falhas = testes.filter(t => t.startsWith('❌')).length;
+            if (falhas === 0) {
+                statusEl.className = 'status success';
+                statusEl.textContent = '✅ Todos os testes passaram!';
+            } else {
+                statusEl.className = 'status error';
+                statusEl.textContent = `❌ ${falhas} teste(s) falharam`;
+            }
+        }
+
+        // Executar teste de servidor automaticamente ao carregar
+        window.onload = () => {
+            testarServidor();
+        };
+    </script>
+</body>
+</html>

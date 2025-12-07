@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin Completo - Sorveteria Delícia</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .admin-tabs button {
+            padding: 1rem 2rem;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .admin-tabs button.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .admin-tabs button:hover:not(.active) {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .entity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .entity-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .entity-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        
+        .entity-card h4 {
+            margin: 0 0 0.5rem 0;
+            color: #2d3436;
+        }
+        
+        .entity-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .entity-actions button {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .btn-edit {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-edit:hover {
+            background: #2980b9;
+        }
+        
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2d3436;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn-primary {
+            flex: 1;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            padding: 1rem 2rem;
+            background: #95a5a6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+        
+        .color-preview {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+        
+        .produto-preview {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .produto-preview img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1>🍦 Admin Completo - Sorveteria Delícia</h1>
+                </div>
+                <div class="nav-menu">
+                    <a href="/">🏠 Início</a>
+                    <a href="/admin">📊 Dashboard</a>
+                    <span id="adminUserName" style="color: var(--primary-color); font-weight: bold;"></span>
+                    <a href="#" id="btnLogout">🚪 Sair</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="admin-section">
+        <div class="container">
+            <h2 class="section-title">🎨 Gerenciamento Completo</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 2rem;">
+                Configure as 4 entidades (Sabor, Tipo, Tamanho, Categoria) e depois crie seus produtos!
+            </p>
+
+            <div class="admin-tabs">
+                <button onclick="switchTab('produtos')" class="tab-btn active" data-tab="produtos">
+                    🍦 Produtos
+                </button>
+                <button onclick="switchTab('sabores')" class="tab-btn" data-tab="sabores">
+                    🎨 Sabores
+                </button>
+                <button onclick="switchTab('tipos')" class="tab-btn" data-tab="tipos">
+                    ✨ Tipos
+                </button>
+                <button onclick="switchTab('tamanhos')" class="tab-btn" data-tab="tamanhos">
+                    📏 Tamanhos
+                </button>
+                <button onclick="switchTab('categorias')" class="tab-btn" data-tab="categorias">
+                    🏷️ Categorias
+                </button>
+            </div>
+
+            <!-- TAB PRODUTOS -->
+            <div id="tab-produtos" class="tab-content active">
+                <div class="form-container">
+                    <h3>➕ Adicionar Novo Produto</h3>
+                    <form id="formProduto">
+                        <input type="hidden" id="produtoId">
+                        
+                        <div class="form-group">
+                            <label>Nome do Produto *</label>
+                            <input type="text" id="produtoNome" required placeholder="Ex: Sorvete de Morango">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Preço (R$) *</label>
+                            <input type="number" id="produtoPreco" step="0.01" required placeholder="Ex: 12.90">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Imagem do Produto *</label>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <div style="flex: 1; min-width: 200px;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: normal;">
+                                        📤 Fazer Upload de Imagem
+                                    </label>
+                                    <input type="file" id="produtoImagemFile" accept="image/*" 
+                                           style="width: 100%; padding: 0.75rem; border: 2px dashed #667eea; border-radius: 8px; cursor: pointer;">
+                                    <button type="button" onclick="uploadImagem()" id="btnUpload"
+                                            style="width: 100%; margin-top: 0.5rem; padding: 0.75rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                        ⬆️ Enviar Imagem
+                                    </button>
+                                </div>
+                                <div style="flex: 1; min-width: 200px;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: normal;">
+                                        🔗 OU Cole URL da Imagem
+                                    </label>
+                                    <input type="url" id="produtoImagem" placeholder="https://exemplo.com/imagem.jpg"
+                                           style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                                </div>
+                            </div>
+                            <div class="produto-preview" id="imagemPreview" style="display: none;">
+                                <strong>Preview:</strong>
+                                <img id="imagemPreviewImg" src="" alt="Preview" style="max-width: 100%; max-height: 300px; border-radius: 8px; margin-top: 0.5rem;">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Sabor *</label>
+                            <select id="produtoSabor" required>
+                                <option value="">Selecione um sabor</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Tipo *</label>
+                            <select id="produtoTipo" required>
+                                <option value="">Selecione um tipo</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Tamanho *</label>
+                            <select id="produtoTamanho" required>
+                                <option value="">Selecione um tamanho</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Categoria *</label>
+                            <select id="produtoCategoria" required>
+                                <option value="">Selecione uma categoria</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">💾 Salvar Produto</button>
+                            <button type="button" class="btn-secondary" onclick="cancelarEdicaoProduto()">❌ Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <h3>📋 Produtos Cadastrados</h3>
+                <div id="produtosLista" class="entity-grid"></div>
+            </div>
+
+            <!-- TAB SABORES -->
+            <div id="tab-sabores" class="tab-content">
+                <div class="form-container">
+                    <h3>🎨 Adicionar Novo Sabor</h3>
+                    <form id="formSabor">
+                        <input type="hidden" id="saborId">
+                        <div class="form-group">
+                            <label>Nome do Sabor *</label>
+                            <input type="text" id="saborNome" required placeholder="Ex: Morango, Chocolate, Baunilha">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">💾 Salvar Sabor</button>
+                            <button type="button" class="btn-secondary" onclick="cancelarEdicaoSabor()">❌ Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+                <h3>📋 Sabores Cadastrados</h3>
+                <div id="saboresLista" class="entity-grid"></div>
+            </div>
+
+            <!-- TAB TIPOS -->
+            <div id="tab-tipos" class="tab-content">
+                <div class="form-container">
+                    <h3>✨ Adicionar Novo Tipo</h3>
+                    <form id="formTipo">
+                        <input type="hidden" id="tipoId">
+                        <div class="form-group">
+                            <label>Nome do Tipo *</label>
+                            <input type="text" id="tipoNome" required placeholder="Ex: Artesanal, Gourmet, Light">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">💾 Salvar Tipo</button>
+                            <button type="button" class="btn-secondary" onclick="cancelarEdicaoTipo()">❌ Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+                <h3>📋 Tipos Cadastrados</h3>
+                <div id="tiposLista" class="entity-grid"></div>
+            </div>
+
+            <!-- TAB TAMANHOS -->
+            <div id="tab-tamanhos" class="tab-content">
+                <div class="form-container">
+                    <h3>📏 Adicionar Novo Tamanho</h3>
+                    <form id="formTamanho">
+                        <input type="hidden" id="tamanhoId">
+                        <div class="form-group">
+                            <label>Nome do Tamanho *</label>
+                            <input type="text" id="tamanhoNome" required placeholder="Ex: Pequeno, Médio, Grande">
+                        </div>
+                        <div class="form-group">
+                            <label>Mililitros (ml) *</label>
+                            <input type="number" id="tamanhoMl" required placeholder="Ex: 300, 500, 800">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">💾 Salvar Tamanho</button>
+                            <button type="button" class="btn-secondary" onclick="cancelarEdicaoTamanho()">❌ Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+                <h3>📋 Tamanhos Cadastrados</h3>
+                <div id="tamanhosLista" class="entity-grid"></div>
+            </div>
+
+            <!-- TAB CATEGORIAS -->
+            <div id="tab-categorias" class="tab-content">
+                <div class="form-container">
+                    <h3>🏷️ Adicionar Nova Categoria</h3>
+                    <form id="formCategoria">
+                        <input type="hidden" id="categoriaId">
+                        <div class="form-group">
+                            <label>Nome da Categoria *</label>
+                            <input type="text" id="categoriaNome" required placeholder="Ex: Clássicos, Premium, Diet">
+                        </div>
+                        <div class="form-group">
+                            <label>Cor (HEX) *</label>
+                            <input type="color" id="categoriaCor" required value="#ff6b9d">
+                            <span class="color-preview" id="categoriaCorPreview" style="background: #ff6b9d;"></span>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">💾 Salvar Categoria</button>
+                            <button type="button" class="btn-secondary" onclick="cancelarEdicaoCategoria()">❌ Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+                <h3>📋 Categorias Cadastradas</h3>
+                <div id="categoriasLista" class="entity-grid"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Sorveteria Delícia. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="auth-guard.js"></script>
+    <script src="admin-completo.js"></script>
+
+    
+</body>
+</html>

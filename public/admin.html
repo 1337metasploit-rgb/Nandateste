@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecionando...</title>
+    <script>
+        // Redirecionar para o painel admin completo
+        window.location.href = '/admincompleto';
+    </script>
+</head>
+<body>
+    <p style="text-align: center; margin-top: 50px; font-size: 1.2em;">
+        Redirecionando para o Painel Admin Completo...
+    </p>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1>🍦 Admin - Sorveteria Delícia</h1>
+                </div>
+                <div class="nav-menu">
+                    <a href="/">Início</a>
+                    <span id="adminUserName"></span>
+                    <a href="#" id="btnLogout">Sair</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="admin-section">
+        <div class="container">
+            <h2 class="section-title">Painel Administrativo</h2>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-info">
+                        <h3 id="statTotalPedidos">0</h3>
+                        <p>Total de Pedidos</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <h3 id="statTotalVendas">R$ 0,00</h3>
+                        <p>Total em Vendas</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-info">
+                        <h3 id="statPedidosPendentes">0</h3>
+                        <p>Pedidos Pendentes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <h3 id="statTotalUsuarios">0</h3>
+                        <p>Usuários Cadastrados</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-content">
+                <h3>Gerenciar Pedidos</h3>
+                <div id="pedidosAdmin" class="pedidos-list">
+                    <!-- Pedidos serão carregados aqui -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Sorveteria Delícia. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="auth-guard.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
