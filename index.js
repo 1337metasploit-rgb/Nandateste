@@ -334,8 +334,12 @@ app.get('/admincompleto', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admincompleto.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`🍦 Servidor rodando em http://localhost:${PORT}`);
-  console.log('👤 Admin: admin / admin123');
-  console.log('👤 Usuário: usuario / user123');
-});
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`🍦 Servidor rodando em http://localhost:${PORT}`);
+    console.log('👤 Admin: admin / admin123');
+    console.log('👤 Usuário: usuario / user123');
+  });
+}
+
+module.exports = app;

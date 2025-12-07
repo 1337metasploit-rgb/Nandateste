@@ -2,10 +2,10 @@
   "name": "sorveteria-site",
   "version": "1.0.0",
   "description": "Site de sorveteria com banco de dados MongoDB",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js"
+    "dev": "node index.js",
+    "start": "node index.js"
   },
   "keywords": ["sorveteria", "ecommerce", "mongodb"],
   "author": "",
